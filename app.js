@@ -1,24 +1,16 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-
-//Live reload when save file
-const livereload = require('livereload')
-const connectLiveReload = require('connect-livereload')
-const liveReloadServer = livereload.createServer()
-liveReloadServer.server.once("connection", () => {
-    setTimeout(() => {
-        liveReloadServer.refresh("/")
-    }, 100)
-})
+const cors = require('cors')
 
 const app = express()
 
-app.use(connectLiveReload())
+app.use(cors())
 
+app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 
-const apiRouter = require('./route/api')
+const apiRouter = require('./routes/api')
 
-app.use(apiRouter)
+app.use('/api', apiRouter)
 
 app.listen(3001)
