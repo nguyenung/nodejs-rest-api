@@ -7,25 +7,40 @@ const { loadEnvironmentVariables } = require('./../config/env')
 loadEnvironmentVariables()
 
 describe('Auth middleware', function () {
-    it('Should throw error if no authorization header is provided', function () {
+    it('should throw error if no authorization header is provided', function () {
         const req = {
-            get: function (headerName) {
-                return null
-            }
+            get: sinon.stub().returns(null),
         }
         expect(authMiddleware.bind(this, req, {}, () => { })).to.throw('Not authenticated')
     })
 
-    it('Should throw error if authorization header contains only one string', function () {
+    it('should throw error if authorization header contains only one string', function () {
         const req = {
-            get: function (headerName) {
-                return 'singleString'
-            }
+            get: sinon.stub().returns('singleString'),
         }
         expect(authMiddleware.bind(this, req, {}, () => { })).to.throw()
     })
 
-    it('Should throw error if the token is invalid', function () {
+    it('should throw error if authorization header type is not Bearer', function () {
+        const req = {
+            get: sinon.stub().returns('NotBearer sampleToken'),
+        }
+        expect(authMiddleware.bind(this, req, {}, () => { })).to.throw(Error, 'Invalid token type.')
+        .with.property('statusCode', 403)
+    })
+
+    it('should throw 500 error if jwt exception', function () {
+        const req = {
+            get: sinon.stub().returns('Bearer sampleToken'),
+        }
+        const verifyStub = sinon.stub(jwt, 'verify')
+        verifyStub.throws({
+            statusCode: 500
+        })
+        verifyStub.restore()
+    })
+
+    it('should throw error if the token is invalid', function () {
         const token = jwt.sign(
             {
                 email: 'test@example.com',
@@ -42,7 +57,7 @@ describe('Auth middleware', function () {
         expect(authMiddleware.bind(this, req, {}, () => { })).to.throw()
     })
 
-    it('Token after decode should contain userId', function () {
+    it('token after decode should contain userId', function () {
         const req = {
             get: function (headerName) {
                 return 'Bearer abc123'
