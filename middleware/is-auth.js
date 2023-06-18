@@ -8,6 +8,13 @@ module.exports = (req, res, next) => {
         throw error
     }
     const token = authHeader.split(' ')[1]
+    const prefixToken = authHeader.split(' ')[0]
+    if (prefixToken !== 'Bearer') {
+        const error = new Error('Invalid token type.')
+        error.statusCode = 403
+        throw error
+    }
+
     let decodedToken
     try {
         decodedToken = jwt.verify(token, process.env.APP_SECRET_KEY)
