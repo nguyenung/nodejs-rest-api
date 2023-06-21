@@ -1,16 +1,16 @@
-const express = require('express');
-const { body } = require('express-validator/check');
+import { Router } from 'express';
+import { body } from 'express-validator/check/index.js';
 
-const feedController = require('../controllers/feed');
-const isAuth = require('../middleware/is-auth');
+import { getPosts, createPost, getPost, updatePost, deletePost } from '../controllers/feed.js';
+import isAuth from '../middleware/is-auth.js';
 
-const router = express.Router();
+const feedRoutes = Router();
 
 // GET /feed/posts
-router.get('/posts', isAuth, feedController.getPosts);
+feedRoutes.get('/posts', isAuth, getPosts);
 
 // POST /feed/post
-router.post(
+feedRoutes.post(
   '/post',
   isAuth,
   [
@@ -21,12 +21,12 @@ router.post(
       .trim()
       .isLength({ min: 5 })
   ],
-  feedController.createPost
+  createPost
 );
 
-router.get('/post/:postId', isAuth, feedController.getPost);
+feedRoutes.get('/post/:postId', isAuth, getPost);
 
-router.put(
+feedRoutes.put(
   '/post/:postId',
   isAuth,
   [
@@ -37,9 +37,9 @@ router.put(
       .trim()
       .isLength({ min: 5 })
   ],
-  feedController.updatePost
+  updatePost
 );
 
-router.delete('/post/:postId', isAuth, feedController.deletePost);
+feedRoutes.delete('/post/:postId', isAuth, deletePost);
 
-module.exports = router;
+export default feedRoutes;

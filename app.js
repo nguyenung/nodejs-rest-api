@@ -1,14 +1,20 @@
-const path = require('path')
+import path from 'path'
 
-const express = require('express')
-const bodyParser = require('body-parser')
-const mongoose = require('mongoose')
-const multer = require('multer')
-const { loadEnvironmentVariables } = require('./config/env')
+import express from 'express'
+import bodyParser from 'body-parser'
+import mongoose from 'mongoose'
+import multer from 'multer'
+import loadEnvironmentVariables from './config/env.js'
 loadEnvironmentVariables()
 
-const feedRoutes = require('./routes/feed')
-const authRoutes = require('./routes/auth')
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+import feedRoutes from './routes/feed.js'
+import authRoutes from './routes/auth.js'
 
 const app = express()
 

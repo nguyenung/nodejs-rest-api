@@ -1,11 +1,9 @@
-const dotenv = require('dotenv')
+import { config } from 'dotenv';
 
 const loadEnvironmentVariables = () => {
-    dotenv.config()
+    config()
     const environment = process.env.NODE_ENV || 'local'
-    dotenv.config({ path: `.env.${environment}` })
+    config({ path: `.env.${environment}` })
 };
 
-module.exports = {
-    loadEnvironmentVariables,
-}
+export default loadEnvironmentVariables

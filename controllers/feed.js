@@ -1,12 +1,12 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs'
+import path from 'path'
 
-const { validationResult } = require('express-validator/check');
+import validationResult from 'express-validator/check/index.js'
 
-const Post = require('../models/post');
-const User = require('../models/user');
+import Post from '../models/post.js'
+import User from '../models/user.js'
 
-exports.getPosts = async (req, res, next) => {
+export async function getPosts(req, res, next) {
   const currentPage = req.query.page || 1;
   const perPage = 2;
   try {
@@ -28,7 +28,7 @@ exports.getPosts = async (req, res, next) => {
   }
 };
 
-exports.createPost = async (req, res, next) => {
+export async function createPost(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     const error = new Error('Validation failed, entered data is incorrect.');
@@ -67,7 +67,7 @@ exports.createPost = async (req, res, next) => {
   }
 };
 
-exports.getPost = async (req, res, next) => {
+export async function getPost(req, res, next) {
   const postId = req.params.postId;
   const post = await Post.findById(postId);
   try {
@@ -85,7 +85,7 @@ exports.getPost = async (req, res, next) => {
   }
 };
 
-exports.updatePost = async (req, res, next) => {
+export async function updatePost(req, res, next) {
   const postId = req.params.postId;
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -132,7 +132,7 @@ exports.updatePost = async (req, res, next) => {
   }
 };
 
-exports.deletePost = async (req, res, next) => {
+export async function deletePost (req, res, next) {
   const postId = req.params.postId;
   try {
     const post = await Post.findById(postId);

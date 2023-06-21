@@ -1,13 +1,13 @@
-const express = require('express');
-const { body } = require('express-validator/check');
+import { Router } from 'express';
+import body from 'express-validator/check/check.js';
 
-const User = require('../models/user');
-const authController = require('../controllers/auth');
-const isAuth = require('../middleware/is-auth');
+import User from '../models/user.js';
+import { signup, login, getUserStatus, updateUserStatus } from '../controllers/auth.js';
+import isAuth from '../middleware/is-auth.js';
 
-const router = express.Router();
+const authRoutes = Router();
 
-router.put(
+authRoutes.put(
   '/signup',
   [
     body('email')
@@ -29,14 +29,14 @@ router.put(
       .not()
       .isEmpty()
   ],
-  authController.signup
+  signup
 );
 
-router.post('/login', authController.login);
+authRoutes.post('/login', login);
 
-router.get('/status', isAuth, authController.getUserStatus);
+authRoutes.get('/status', isAuth, getUserStatus);
 
-router.patch(
+authRoutes.patch(
   '/status',
   isAuth,
   [
@@ -45,7 +45,7 @@ router.patch(
       .not()
       .isEmpty()
   ],
-  authController.updateUserStatus
-);
+  updateUserStatus
+)
 
-module.exports = router;
+export default authRoutes

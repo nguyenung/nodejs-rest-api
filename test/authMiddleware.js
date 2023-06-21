@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken')
 const sinon = require('sinon')
 const authMiddleware = require('./../middleware/is-auth')
 
-const { loadEnvironmentVariables } = require('./../config/env')
+const { loadEnvironmentVariables } = require('./../config/env').default
 loadEnvironmentVariables()
 
 describe('Auth middleware', function () {

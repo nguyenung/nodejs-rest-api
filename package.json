@@ -8,6 +8,7 @@
     "start": "node app.js",
     "watch": "nodemon app.js"
   },
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nguyenung/nodejs-rest-api.git"

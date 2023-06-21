@@ -2,7 +2,7 @@ const expect = require('chai').expect
 const sinon = require('sinon')
 const assert = require('assert')
 
-const User = require('./../models/user')
+const User = require('./../models/user').default
 const AuthController = require('./../controllers/auth')
 
 describe('AuthController - Login', () => {
